@@ -1,0 +1,22 @@
+{
+    "name": "ephp/geo",
+    "type": "symfony-bundle",
+    "description": "Geolocalizzazione",
+    "keywords": ["geo", "ephp", "symfony-2.1"],
+    "homepage": "https://github.com/ephp/Geo",
+    "license": "MIT",
+    "authors": [
+            {
+                "name": "Ephraim Pepe",
+                "email": "ephraim.pepe@gmail.com"
+            }
+    ],
+    "require": {
+            "php": ">=5.4.0"
+    },
+    "autoload": {
+            "psr-0": { "Ephp\\GeoBundle": "" }
+    },
+    "target-dir": "Ephp/GeoBundle",
+    "minimum-stability": "dev"
+}
