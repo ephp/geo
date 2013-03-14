@@ -218,41 +218,8 @@ SELECT geo
         }
     }
     
-    /**
-     * tira Fuori tutte le Nazioni dal Database
-     */
-    public function cercaNazione() {
-        try {
-            $q = $this->getEntityManager()->createQuery("
-SELECT geo 
-  FROM Ephp\GeoBundle\Entity\GeoNames geo 
- WHERE geo.feature_code = 'PCLI'
- ORDER BY geo.name ASC
-               ");
-            $nazioni = $q->execute();
-            return $nazioni;
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
     
-    /**
-     * tira Fuori tutte le Nazioni dal Database
-     * 
-     *     $q->where('p.price =:prezzo');
-    $q->andWhere('p.name =:nome');
-    $q->setParameter('prezzo', $prezzo);
-    $q->setParameter('nome', $nome);
-     * 
-     */
-    public function selectNazioni() {
-       return $this->createQueryBuilder('g')
-               ->where('g.feature_code = :fc')
-               ->andWhere('g.country_code =:cc')
-               ->setParameter('fc', 'ADM3')
-               ->setParameter('cc', 'IT')
-               ->orderBy('g.name','ASC');
-    }
+    
     
     /*
      * Restituisce il comune
