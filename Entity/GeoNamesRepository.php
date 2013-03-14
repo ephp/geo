@@ -218,6 +218,24 @@ SELECT geo
         }
     }
     
+    /**
+     * tira Fuori tutte le Nazioni dal Database
+     */
+    public function cercaNazione() {
+        try {
+            $q = $this->getEntityManager()->createQuery("
+SELECT geo 
+  FROM Ephp\GeoBundle\Entity\GeoNames geo 
+ WHERE geo.feature_code = 'PCLI'
+ ORDER BY geo.name DESC
+               ");
+            $nazioni = $q->execute();
+            return $nazioni;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+    
     /*
      * Restituisce il comune
      *

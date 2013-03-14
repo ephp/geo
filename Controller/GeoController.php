@@ -32,7 +32,31 @@ class GeoController extends Controller {
         echo json_encode($out);
         exit;
     }
-
+    
+    
+    
+    /**
+     * @Route("/geo/get/nazione", name="geo_search_nazione_database", defaults={"_format"="json"}))
+     * @Template()
+     */
+    public function geoSearchNazioneDatabaseAction() {
+        $em = $this->getEM();
+        $_geo_names = $em->getRepository('Ephp\GeoBundle\Entity\GeoNames');
+        $nazioni = $_geo_names->cercaNazione();
+        $out = array();
+        foreach ($nazioni as $nazione) {
+            $out[] = array(
+                'id' => $nazione->getGeonameid(),
+                'nome' => $nazione->getName(),
+                'admin2_code' => $nazione->getAdmin2Code(),
+                'latitude' => $nazione->getLatitude(),
+                'longitude' => $nazione->getLongitude(),
+            );
+        }
+        echo json_encode($out);
+        exit;
+    }
+    
     /**
      * @Route("/geo/get/place", name="geo_search_database")
      * @Template()
