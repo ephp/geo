@@ -161,4 +161,441 @@ class GeoNames
     public function __toString() {
         return $this->getGeonameid();
     }
+
+    /**
+     * Set geonameid
+     *
+     * @param integer $geonameid
+     * @return GeoNames
+     */
+    public function setGeonameid($geonameid)
+    {
+        $this->geonameid = $geonameid;
+    
+        return $this;
+    }
+
+    /**
+     * Get geonameid
+     *
+     * @return integer 
+     */
+    public function getGeonameid()
+    {
+        return $this->geonameid;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return GeoNames
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set asciiname
+     *
+     * @param string $asciiname
+     * @return GeoNames
+     */
+    public function setAsciiname($asciiname)
+    {
+        $this->asciiname = $asciiname;
+    
+        return $this;
+    }
+
+    /**
+     * Get asciiname
+     *
+     * @return string 
+     */
+    public function getAsciiname()
+    {
+        return $this->asciiname;
+    }
+
+    /**
+     * Set alternatenames
+     *
+     * @param string $alternatenames
+     * @return GeoNames
+     */
+    public function setAlternatenames($alternatenames)
+    {
+        $this->alternatenames = $alternatenames;
+    
+        return $this;
+    }
+
+    /**
+     * Get alternatenames
+     *
+     * @return string 
+     */
+    public function getAlternatenames()
+    {
+        return $this->alternatenames;
+    }
+
+    /**
+     * Set latitude
+     *
+     * @param float $latitude
+     * @return GeoNames
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+    
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return float 
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * Set longitude
+     *
+     * @param float $longitude
+     * @return GeoNames
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+    
+        return $this;
+    }
+
+    /**
+     * Get longitude
+     *
+     * @return float 
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * Set feature_class
+     *
+     * @param string $featureClass
+     * @return GeoNames
+     */
+    public function setFeatureClass($featureClass)
+    {
+        $this->feature_class = $featureClass;
+    
+        return $this;
+    }
+
+    /**
+     * Get feature_class
+     *
+     * @return string 
+     */
+    public function getFeatureClass()
+    {
+        return $this->feature_class;
+    }
+
+    /**
+     * Set feature_code
+     *
+     * @param string $featureCode
+     * @return GeoNames
+     */
+    public function setFeatureCode($featureCode)
+    {
+        $this->feature_code = $featureCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get feature_code
+     *
+     * @return string 
+     */
+    public function getFeatureCode()
+    {
+        return $this->feature_code;
+    }
+
+    /**
+     * Set country_code
+     *
+     * @param string $countryCode
+     * @return GeoNames
+     */
+    public function setCountryCode($countryCode)
+    {
+        $this->country_code = $countryCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get country_code
+     *
+     * @return string 
+     */
+    public function getCountryCode()
+    {
+        return $this->country_code;
+    }
+
+    /**
+     * Set ccs
+     *
+     * @param string $ccs
+     * @return GeoNames
+     */
+    public function setCcs($ccs)
+    {
+        $this->ccs = $ccs;
+    
+        return $this;
+    }
+
+    /**
+     * Get ccs
+     *
+     * @return string 
+     */
+    public function getCcs()
+    {
+        return $this->ccs;
+    }
+
+    /**
+     * Set admin1_code
+     *
+     * @param string $admin1Code
+     * @return GeoNames
+     */
+    public function setAdmin1Code($admin1Code)
+    {
+        $this->admin1_code = $admin1Code;
+    
+        return $this;
+    }
+
+    /**
+     * Get admin1_code
+     *
+     * @return string 
+     */
+    public function getAdmin1Code()
+    {
+        return $this->admin1_code;
+    }
+
+    /**
+     * Set admin2_code
+     *
+     * @param string $admin2Code
+     * @return GeoNames
+     */
+    public function setAdmin2Code($admin2Code)
+    {
+        $this->admin2_code = $admin2Code;
+    
+        return $this;
+    }
+
+    /**
+     * Get admin2_code
+     *
+     * @return string 
+     */
+    public function getAdmin2Code()
+    {
+        return $this->admin2_code;
+    }
+
+    /**
+     * Set admin3_code
+     *
+     * @param string $admin3Code
+     * @return GeoNames
+     */
+    public function setAdmin3Code($admin3Code)
+    {
+        $this->admin3_code = $admin3Code;
+    
+        return $this;
+    }
+
+    /**
+     * Get admin3_code
+     *
+     * @return string 
+     */
+    public function getAdmin3Code()
+    {
+        return $this->admin3_code;
+    }
+
+    /**
+     * Set admin4_code
+     *
+     * @param string $admin4Code
+     * @return GeoNames
+     */
+    public function setAdmin4Code($admin4Code)
+    {
+        $this->admin4_code = $admin4Code;
+    
+        return $this;
+    }
+
+    /**
+     * Get admin4_code
+     *
+     * @return string 
+     */
+    public function getAdmin4Code()
+    {
+        return $this->admin4_code;
+    }
+
+    /**
+     * Set elevation
+     *
+     * @param integer $elevation
+     * @return GeoNames
+     */
+    public function setElevation($elevation)
+    {
+        $this->elevation = $elevation;
+    
+        return $this;
+    }
+
+    /**
+     * Get elevation
+     *
+     * @return integer 
+     */
+    public function getElevation()
+    {
+        return $this->elevation;
+    }
+
+    /**
+     * Set dem
+     *
+     * @param integer $dem
+     * @return GeoNames
+     */
+    public function setDem($dem)
+    {
+        $this->dem = $dem;
+    
+        return $this;
+    }
+
+    /**
+     * Get dem
+     *
+     * @return integer 
+     */
+    public function getDem()
+    {
+        return $this->dem;
+    }
+
+    /**
+     * Set population
+     *
+     * @param integer $population
+     * @return GeoNames
+     */
+    public function setPopulation($population)
+    {
+        $this->population = $population;
+    
+        return $this;
+    }
+
+    /**
+     * Get population
+     *
+     * @return integer 
+     */
+    public function getPopulation()
+    {
+        return $this->population;
+    }
+
+    /**
+     * Set timezone
+     *
+     * @param string $timezone
+     * @return GeoNames
+     */
+    public function setTimezone($timezone)
+    {
+        $this->timezone = $timezone;
+    
+        return $this;
+    }
+
+    /**
+     * Get timezone
+     *
+     * @return string 
+     */
+    public function getTimezone()
+    {
+        return $this->timezone;
+    }
+
+    /**
+     * Set modification_date
+     *
+     * @param \DateTime $modificationDate
+     * @return GeoNames
+     */
+    public function setModificationDate($modificationDate)
+    {
+        $this->modification_date = $modificationDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get modification_date
+     *
+     * @return \DateTime 
+     */
+    public function getModificationDate()
+    {
+        return $this->modification_date;
+    }
 }

@@ -48,9 +48,7 @@ class GeoController extends Controller {
             $out[] = array(
                 'id' => $nazione->getGeonameid(),
                 'nome' => $nazione->getName(),
-                'admin2_code' => $nazione->getAdmin2Code(),
-                'latitude' => $nazione->getLatitude(),
-                'longitude' => $nazione->getLongitude(),
+                'country_code' => $nazione->getCountryCode(),
             );
         }
         echo json_encode($out);
