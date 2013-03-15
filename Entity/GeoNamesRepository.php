@@ -13,6 +13,60 @@ use Doctrine\ORM\EntityRepository;
 class GeoNamesRepository extends EntityRepository {
 
     /**
+     * Restituisce tutte le citta
+     * 
+     * @param int $geoId Id della nazione
+     * 
+     * @author Barno <barno77@gmail.com> :)
+     */
+    public function getCitta($geoId) {
+
+        $iso = $this->getEntityManager()->getRepository('Ephp\GeoBundle\Entity\Country')->findOneBy(array('geonameid' => $geoId));
+
+        $q = $this->createQueryBuilder('g');
+        $q->select('g.geonameid', 'g.asciiname','g.admin2_code');
+        $q->where('g.country_code =:iso');
+        //$q->andWhere('g.feature_code LIKE ?', 'PPL%');
+        //$q->expr()->like('g.feature_code', $q->expr()->literal('PPL%'));
+        //$q->expr()->like('g.feature_code', '?2');
+
+        $q->andWhere("g.population>=:pop");
+
+        $q->andWhere($q->expr()->in('g.feature_code', array('PPL'
+                    , 'PPLA'
+                    , 'PPLA2'
+                    , 'PPLA3'
+                    , 'PPLA4'
+                    , 'PPLC'
+                    , 'PPLF'
+                    , 'PPLG'
+                    , 'PPLL'
+                    , 'PPLS'
+                    , 'PPLX')));
+
+
+
+
+        //$q->andWhere('g.feature_code LIKE :PPL');
+        //$q->andWhere('g.feature_code LIKE : ?1');
+        //$q->setParameter('PPL', 'PPL%');
+
+
+        /* $q->expr()->like('g.feature_code', '?2');
+          $q->getQuery()->setParameter(2, 'PPL%'); */
+        //$q->getQuery()->setParameter(2, '%' . $value . '%');
+        //$q->field('g.population')->gt(50000);
+        //$q->add('orderBy', 'g.population DESC');
+        $q->add('orderBy', 'g.name ASC');
+        $q->setParameter('iso', $iso->getIso());
+        $q->setParameter('pop', min(1000, $iso->getPopulation() / $iso->getArea()) * 15);
+        $dql = $q->getQuery();
+        $results = $dql->execute();
+
+        return $results;
+    }
+
+    /**
      * Restituisce il comune
      *
      * @param float $latitude
@@ -132,7 +186,6 @@ SELECT geo.admin3_code, geo.admin2_code, (
         }
     }
 
-    
     /**
      * Restituisce la provincia
      *
@@ -200,6 +253,7 @@ SELECT geo.admin2_code, (
      * @return Ephp\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
+
     public function cercaComune($nome) {
 
         try {
@@ -210,17 +264,14 @@ SELECT geo
    AND geo.name LIKE :nome
  ORDER BY geo.population DESC
                ");
-            $q->setParameter('nome', $nome.'%');
+            $q->setParameter('nome', $nome . '%');
             $comuni = $q->execute();
             return $comuni;
         } catch (\Exception $e) {
             throw $e;
         }
     }
-    
-    
-    
-    
+
     /*
      * Restituisce il comune
      *
@@ -229,6 +280,7 @@ SELECT geo
      * @return Ephp\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
+
     public function cercaTutto($nome) {
 
         try {
@@ -243,14 +295,14 @@ SELECT geo
    AND geo.name LIKE :nome
  ORDER BY geo.population DESC
                ");
-            $q->setParameter('nome', $nome.'%');
+            $q->setParameter('nome', $nome . '%');
             $comuni = $q->execute();
             return $comuni;
         } catch (\Exception $e) {
             throw $e;
         }
     }
-    
+
     /*
      * Restituisce il comune
      *
@@ -259,6 +311,7 @@ SELECT geo
      * @return Ephp\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
+
     public function cercaProvincia($nome) {
 
         try {
@@ -269,7 +322,7 @@ SELECT geo
    AND geo.name LIKE :nome
  ORDER BY geo.population DESC
                ");
-            $q->setParameter('nome', '%'.$nome.'%');
+            $q->setParameter('nome', '%' . $nome . '%');
             $province = $q->execute();
             return $province;
         } catch (\Exception $e) {
