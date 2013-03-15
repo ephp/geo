@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class GeoNamesRepository extends EntityRepository {
 
     /**
-     * Restituisce tutte le citta
+     * Restituisce tutte le citta controllando la popolazione minima
      * 
      * @param int $geoId Id della nazione
      * 
@@ -24,11 +24,8 @@ class GeoNamesRepository extends EntityRepository {
         $iso = $this->getEntityManager()->getRepository('Ephp\GeoBundle\Entity\Country')->findOneBy(array('geonameid' => $geoId));
 
         $q = $this->createQueryBuilder('g');
-        $q->select('g.geonameid', 'g.asciiname','g.admin2_code');
+        $q->select('g.geonameid', 'g.asciiname','g.admin1_code','g.admin2_code');
         $q->where('g.country_code =:iso');
-        //$q->andWhere('g.feature_code LIKE ?', 'PPL%');
-        //$q->expr()->like('g.feature_code', $q->expr()->literal('PPL%'));
-        //$q->expr()->like('g.feature_code', '?2');
 
         $q->andWhere("g.population>=:pop");
 
@@ -44,22 +41,10 @@ class GeoNamesRepository extends EntityRepository {
                     , 'PPLS'
                     , 'PPLX')));
 
-
-
-
-        //$q->andWhere('g.feature_code LIKE :PPL');
-        //$q->andWhere('g.feature_code LIKE : ?1');
-        //$q->setParameter('PPL', 'PPL%');
-
-
-        /* $q->expr()->like('g.feature_code', '?2');
-          $q->getQuery()->setParameter(2, 'PPL%'); */
-        //$q->getQuery()->setParameter(2, '%' . $value . '%');
-        //$q->field('g.population')->gt(50000);
-        //$q->add('orderBy', 'g.population DESC');
-        $q->add('orderBy', 'g.name ASC');
+        $q->orderBy('g.name','ASC');
         $q->setParameter('iso', $iso->getIso());
-        $q->setParameter('pop', min(1000, $iso->getPopulation() / $iso->getArea()) * 15);
+        $pop = $iso->getArea() > 2000 && $iso->getPopulation() > 35000 ? min(1000, $iso->getPopulation() / $iso->getArea()) * 15 : 0;
+        $q->setParameter('pop',$pop);
         $dql = $q->getQuery();
         $results = $dql->execute();
 

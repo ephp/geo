@@ -11,16 +11,17 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class CountryRepository extends EntityRepository {
-
-//    public function getIso($geoId) {
-//        $q = $em->createQueryBuilder()
-//                ->select('iso');
-//        $q->where('g.geonameid =:geoId');
-//        $q->setParameter('geoId', $geoId);
-//        $dql = $q->getQuery();
-//        $results = $dql->execute();
-//
-//        return $results;
-//    }
+    
+    /**
+     * Restituisce un oggetto queryBuilder per fare la Select nel Form
+     * 
+     * @return QueryBuilder
+     */
+    public function getCountry() {
+        $q = $this->createQueryBuilder('g');
+        $q->where('g.population > 500'); 
+        $q->orderBy('g.country', 'ASC');
+        return $q;
+    }
 
 }
