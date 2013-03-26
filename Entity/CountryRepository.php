@@ -23,5 +23,22 @@ class CountryRepository extends EntityRepository {
         $q->orderBy('g.country', 'ASC');
         return $q;
     }
+    
+    /**
+     * Restituisce il nome della nazione
+     * 
+     * @param int $geoId 
+     * @return string 
+     */
+    public function getNomeNazione($geoId) {
+        $q = $this->createQueryBuilder('g');
+        $q->select('g.country');
+        $q->where('g.geonameid =:geoId');
+        $q->setParameter('geoId', $geoId);
+        $dql = $q->getQuery();
+        $results = $dql->getOneOrNullResult();
+
+        return $results['country']; 
+    }
 
 }

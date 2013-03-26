@@ -50,6 +50,24 @@ class GeoNamesRepository extends EntityRepository {
 
         return $results;
     }
+    
+    /**
+     * 
+     * @param int $geoId
+     * @return type
+     */
+    public function getNomeCitta($geoId) {
+        $q = $this->createQueryBuilder('g');
+        $q->select('g.asciiname','g.admin2_code');
+        $q->where('g.geonameid =:geoId');
+        $q->setParameter('geoId', $geoId);
+        $dql = $q->getQuery();
+        $results = $dql->getOneOrNullResult();
+
+        return $results["asciiname"]." (".$results["admin2_code"].")";
+    }
+    
+    
 
     /**
      * Restituisce il comune
