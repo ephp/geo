@@ -43,7 +43,7 @@ class GeoNamesRepository extends EntityRepository {
 
         $q->orderBy('g.name','ASC');
         $q->setParameter('iso', $iso->getIso());
-        $pop = $iso->getArea() > 2000 && $iso->getPopulation() > 35000 ? min(1000, $iso->getPopulation() / $iso->getArea()) * 15 : 0;
+        $pop = $iso->getArea() > 2000 && $iso->getPopulation() > 35000 ? max($iso->getPopulation() / 100000, $iso->getPopulation() * 15 / $iso->getArea())  : 0;
         $q->setParameter('pop',$pop);
         $dql = $q->getQuery();
         $results = $dql->execute();
