@@ -58,13 +58,19 @@ class GeoNamesRepository extends EntityRepository {
      */
     public function getNomeCitta($geoId) {
         $q = $this->createQueryBuilder('g');
-        $q->select('g.asciiname','g.admin2_code');
+        $q->select('g.asciiname','g.admin1_code','g.admin2_code');
         $q->where('g.geonameid =:geoId');
         $q->setParameter('geoId', $geoId);
         $dql = $q->getQuery();
         $results = $dql->getOneOrNullResult();
-
-        return $results["asciiname"]." (".$results["admin2_code"].")";
+        $area= "";
+        if($results['admin1_code'] && !intval($results['admin1_code'])){
+            $area = $results['admin1_code'];            
+        }else if ($results['admin2_code'] && !intval($results['admin2_code'])){
+            $area = $results['admin2_code'];
+        }
+        
+        return $results["asciiname"]." (".$area.")";
     }
     
     
