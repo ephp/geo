@@ -1,10 +1,10 @@
 <?php
 
-namespace Ephp\GeoBundle\Entity;
+namespace Ephp\GeoBundle\Model\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
-trait GeoBase {
+trait BaseGeo {
 
     /**
      * @var Comune $comune
