@@ -196,6 +196,7 @@ trait BaseGeo {
      * @ORM\PrePersist
      */
     public function prePersist() {
+        parent::prePersist();
         $this->latitudinerad = deg2rad($this->latitudine);
         $this->longitudinerad = deg2rad($this->longitudine);
     }
@@ -204,6 +205,7 @@ trait BaseGeo {
      * @ORM\PreUpdate
      */
     public function preUpdate() {
+        parent::prePersist();
         $this->latitudinerad = deg2rad($this->latitudine);
         $this->longitudinerad = deg2rad($this->longitudine);
     }
