@@ -8,15 +8,11 @@ trait BaseGeoController {
         $result = array(
             'lat' => null,
             'lon' => null,
-            'cap' => null,
-            'com' => null,
         );
         if ($comune instanceof \EcoSeekr\Bundle\GeoBundle\Entity\GeoNames) {
             $result = array(
                 'lat' => $comune->getLatitude(),
                 'lon' => $comune->getLongitude(),
-                'cap' => false,
-                'com' => true,
             );
         }
         $geocoder = $this->getGeocoder();
@@ -55,7 +51,6 @@ trait BaseGeoController {
 
         $out['lat'] = $result->getGeometry()->getLocation()->getLatitude();
         $out['lon'] = $result->getGeometry()->getLocation()->getLongitude();
-        $out['cap'] = false;
         foreach ($result->getAddressComponents() as $ac) {
             if (in_array('postal_code', $ac->getTypes())) {
                 $out['cap'] = $ac->getShortName();
