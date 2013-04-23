@@ -13,7 +13,8 @@
     ],
     "require": {
             "php": ">=5.4.0",
-            "beberlei/DoctrineExtensions": "*"
+            "beberlei/DoctrineExtensions": "*",
+            "egeloen/google-map-bundle": "*"
     },
     "autoload": {
             "psr-0": { "Ephp\\GeoBundle": "" }
