@@ -26,17 +26,9 @@ trait BaseGeoController {
                 $result['lon'] = $geo['lon'];
             }
         } catch (\Exception $e) {
+            
         }
         return $result;
-    }
-
-    /**
-     * Requests the ivory google map geocoder
-     *
-     * @return \Ivory\GoogleMapBundle\Model\Services\Geocoding\Geocoder $geocoder
-     */
-    protected function getGeocoder() {
-        return $this->get('ivory_google_map.geocoder');
     }
 
     /**
@@ -63,6 +55,88 @@ trait BaseGeoController {
             }
         }
         return $out;
+    }
+
+    /**
+     * Requests the ivory google map geocoder
+     *
+     * @return \Ivory\GoogleMapBundle\Model\Services\Geocoding\Geocoder $geocoder
+     */
+    protected function getGeocoder() {
+        return $this->get('ivory_google_map.geocoder');
+    }
+
+    /**
+     * Requests the ivory google map service
+     *
+     * @return \Ivory\GoogleMapBundle\Model\Map 
+     */
+    private function map() {
+        return $this->get('ivory_google_map.map');
+    }
+
+    /**
+     * Requests the ivory google map service
+     *
+     * @return \Ivory\GoogleMapBundle\Model\Map 
+     */
+    public function getMap($dist, $lat = 41.87194, $lon = 12.56738, $name = 'map', $zoom = 7) {
+        $map = $this->map();
+        $map->setJavascriptVariable($name);
+        $map->setHtmlContainerId($name . '_canvas');
+        $map->setAsync(false);
+        $map->setAutoZoom(false);
+        $map->setCenter($lat, $lon, true);
+        $map->setMapOption('zoom', $zoom);
+        $map->setMapOption('scrollwheel', false);
+        $map->setMapOption('mapTypeControl', false);
+        $map->setMapOption('streetViewControl', false);
+        $map->setMapOption('mapTypeId', \Ivory\GoogleMap\MapTypeId::ROADMAP);
+        $map->setMapOption('zoomControl', true);
+        $map->setZoomControl(\Ivory\GoogleMap\Controls\ControlPosition::LEFT_BOTTOM, \Ivory\GoogleMap\Controls\ZoomControlStyle::LARGE);
+        $map->setMapOption('panControl', true);
+        $map->setPanControl(\Ivory\GoogleMap\Controls\ControlPosition::LEFT_BOTTOM);
+        $map->setStylesheetOption('width', '100%');
+        $map->setStylesheetOption('height', '100%');
+        $map->setLanguage('it');
+        $marker = $this->getMarker($lat, $lon);
+        $circle = $this->getCircle($dist, $lat, $lon);
+        $circle->setOption('fillOpacity', 0.10);
+        $circle->setOption('strokeOpacity', 0.20);
+        $map->addMarker($marker);
+        $map->addCircle($circle);
+        return $map;
+    }
+
+    /**
+     * Requests the ivory google map service
+     *
+     * @return \Ivory\GoogleMapBundle\Model\Overlays\Marker
+     */
+    public function getMarker($lat = 41.87194, $lon = 12.56738, $name = 'marker') {
+        $marker = $this->get('ivory_google_map.marker');
+        $marker->setJavascriptVariable($name);
+        $marker->setPosition($lat, $lon, true);
+        $marker->setOption('clickable', true);
+        $marker->setOption('flat', true);
+        return $marker;
+    }
+
+    /**
+     * Requests the ivory google map service
+     *
+     * @return \Ivory\GoogleMapBundle\Model\Overlays\Circle
+     */
+    public function getCircle($dist, $lat = 41.87194, $lon = 12.56738, $name = 'circle') {
+        $circle = $this->get('ivory_google_map.circle');
+        $circle->setJavascriptVariable($name);
+        $circle->setCenter($lat, $lon, true);
+        $circle->setRadius($dist * 1000);
+        $circle->setOption('clickable', true);
+        $circle->setOption('strokeWeight', 2);
+        $circle->setOption('fillOpacity', 0.25);
+
+        return $circle;
     }
 
 }
