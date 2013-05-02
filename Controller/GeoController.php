@@ -15,10 +15,12 @@ class GeoController extends Controller {
     public function geoSearchComuneDatabaseAction() {
         $request = $this->getRequest();
         $nome = $request->get('nome');
+        $nazione = $request->get('nazione', 'IT');
         $maxRows = $request->get('maxRows');
         $em = $this->getEM();
-        $_geo_names = $em->getRepository('Ephp\GeoBundle\Entity\GeoNames');
-        $comuni = $_geo_names->cercaComune($nome);
+        $_geo_names = $em->getRepository('EphpGeoBundle:GeoNames');
+        /* @var $_geo_names \Ephp\GeoBundle\Entity\GeoNamesRepository */
+        $comuni = $_geo_names->cercaComune($nome, $nazione);
         $out = array();
         foreach ($comuni as $comune) {
             $out[] = array(

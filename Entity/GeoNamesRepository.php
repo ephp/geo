@@ -309,17 +309,19 @@ SELECT geo.admin2_code, (
      * @return Ephp\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
-    public function cercaComune($nome) {
+    public function cercaComune($nome, $nazione = 'IT') {
 
         try {
             $q = $this->getEntityManager()->createQuery("
 SELECT geo
   FROM Ephp\GeoBundle\Entity\GeoNames geo 
  WHERE geo.feature_code = 'ADM3'
+   AND geo.country_code = :nazione
    AND geo.name LIKE :nome
  ORDER BY geo.population DESC
                ");
-            $q->setParameter('nome', $nome . '%');
+            $q->setParameter('nome', '%' . $nome . '%');
+            $q->setParameter('nazione', $nazione );
             $comuni = $q->execute();
             return $comuni;
         } catch (\Exception $e) {
