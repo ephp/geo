@@ -93,9 +93,9 @@ trait BaseGeoController {
         $map->setMapOption('streetViewControl', false);
         $map->setMapOption('mapTypeId', \Ivory\GoogleMap\MapTypeId::ROADMAP);
         $map->setMapOption('zoomControl', true);
-        $map->setZoomControl(\Ivory\GoogleMap\Controls\ControlPosition::LEFT_BOTTOM, \Ivory\GoogleMap\Controls\ZoomControlStyle::LARGE);
+        $map->setZoomControl(\Ivory\GoogleMap\Controls\ControlPosition::RIGHT_BOTTOM, \Ivory\GoogleMap\Controls\ZoomControlStyle::LARGE);
         $map->setMapOption('panControl', true);
-        $map->setPanControl(\Ivory\GoogleMap\Controls\ControlPosition::LEFT_BOTTOM);
+        $map->setPanControl(\Ivory\GoogleMap\Controls\ControlPosition::RIGHT_BOTTOM);
         $map->setStylesheetOption('width', '100%');
         $map->setStylesheetOption('height', '100%');
         $map->setLanguage('it');
