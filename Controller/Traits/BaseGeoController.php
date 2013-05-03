@@ -118,6 +118,7 @@ trait BaseGeoController {
         $marker->setJavascriptVariable($name);
         $marker->setPosition($lat, $lon, true);
         $marker->setOption('clickable', true);
+        $marker->setOption('draggable', true);
         $marker->setOption('flat', true);
         return $marker;
     }
