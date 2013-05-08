@@ -313,13 +313,18 @@ class GeoController extends Controller {
 
     /**
      *
-     * @param Ivory\GoogleMapBundle\Model\Services\Geocoding\Result\GeocoderResponse $response
+     * @param \Ivory\GoogleMapBundle\Model\Services\Geocoding\Result\GeocoderResponse $response
      * @return array
      */
-    private function getFirstResult(\Ivory\GoogleMapBundle\Model\Services\Geocoding\Result\GeocoderResponse $response) {
+    protected function getFirstResult(\Ivory\GoogleMap\Services\Geocoding\Result\GeocoderResponse $response) {
         $out = array();
-//        $result = new \Ivory\GoogleMapBundle\Model\Services\Geocoding\Result\GeocoderResult();
+        if ($response->getStatus() == 'OVER_QUERY_LIMIT') {
+            throw new \Exception('STOP');
+        }
         $r = $response->getResults();
+        if (count($r) == 0) {
+            throw new \Exception('No dati geolocalizzati');
+        }
         $result = $r[0];
 
         $out['lat'] = $result->getGeometry()->getLocation()->getLatitude();
@@ -331,5 +336,4 @@ class GeoController extends Controller {
         }
         return $out;
     }
-
 }
