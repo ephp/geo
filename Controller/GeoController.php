@@ -38,7 +38,7 @@ class GeoController extends Controller {
     
     
     /**
-     * @Route("/geo/get/nazione", name="geo_search_nazione_database", defaults={"_format"="json"}))
+     * @Route("/geo/get/nazione", name="geo_search_nazione_database", defaults={"_format"="json"})
      * @Template()
      */
     public function geoSearchNazioneDatabaseAction() {
@@ -88,7 +88,7 @@ class GeoController extends Controller {
     }
 
     /**
-     * @Route("/geo/search/comune", name="geo_search_comune")
+     * @Route("/geo/search/comune", name="geo_search_comune", defaults={"_format"="json"})
      * @Template()
      */
     public function geoSearchComuneAction() {
@@ -103,11 +103,9 @@ class GeoController extends Controller {
             $provincia = $out['provincia'];
             switch ($request->get('output', 'json')) {
                 case 'nome':
-                    echo $comune->getName();
-                    exit;
+                    return new \Symfony\Component\HttpFoundation\Response(json_encode($comune->getName()));
                 case 'nome_e_provincia':
-                    echo "{$comune->getName()} ({$comune->getAdmin2Code()})";
-                    exit;
+                    return new \Symfony\Component\HttpFoundation\Response(json_encode("{$comune->getName()} ({$comune->getAdmin2Code()})"));
                 case 'json':
                 default:
                     $out = array(
@@ -118,13 +116,12 @@ class GeoController extends Controller {
                         'longitude' => $longitude,
                     );
                     $request->getSession()->set('posizione', array('lat' => $latitude, 'lon' => $longitude, 'luogo' => $comune->getName() . ' (' . $comune->getAdmin2Code() . ')', 'provincia' => $provincia->getName(), 'sigla_provincia' => $comune->getAdmin2Code()));
-                    $request->getSession()->set('posizione_json', $out);
-                    echo json_encode($out);
-                    exit;
+                    $request->getSession()->set('posizione_json', json_encode($out));
+                    return new \Symfony\Component\HttpFoundation\Response(json_encode($out));
                     break;
             }
         } else {
-            echo json_encode($request->getSession()->get('posizione_json'));
+            return new \Symfony\Component\HttpFoundation\Response($request->getSession()->get('posizione_json'));
             exit;
         }
     }
