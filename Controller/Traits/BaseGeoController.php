@@ -88,7 +88,7 @@ trait BaseGeoController {
         $map->setAutoZoom(false);
         $map->setCenter($lat, $lon, true);
         $map->setMapOption('zoom', $zoom);
-        $map->setMapOption('scrollwheel', false);
+        $map->setMapOption('scrollwheel', true);
         $map->setMapOption('mapTypeControl', false);
         $map->setMapOption('streetViewControl', false);
         $map->setMapOption('mapTypeId', \Ivory\GoogleMap\MapTypeId::ROADMAP);
