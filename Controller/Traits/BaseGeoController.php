@@ -80,6 +80,33 @@ trait BaseGeoController {
      *
      * @return \Ivory\GoogleMapBundle\Model\Map 
      */
+    public function getSimpleMap($lat = 41.87194, $lon = 12.56738, $name = 'map', $zoom = 5) {
+        $map = $this->map();
+        $map->setJavascriptVariable($name);
+        $map->setHtmlContainerId($name . '_canvas');
+        $map->setAsync(false);
+        $map->setAutoZoom(false);
+        $map->setCenter($lat, $lon, true);
+        $map->setMapOption('zoom', $zoom);
+        $map->setMapOption('scrollwheel', true);
+        $map->setMapOption('mapTypeControl', false);
+        $map->setMapOption('streetViewControl', false);
+        $map->setMapOption('mapTypeId', \Ivory\GoogleMap\MapTypeId::ROADMAP);
+        $map->setMapOption('zoomControl', true);
+        $map->setZoomControl(\Ivory\GoogleMap\Controls\ControlPosition::RIGHT_BOTTOM, \Ivory\GoogleMap\Controls\ZoomControlStyle::LARGE);
+        $map->setMapOption('panControl', true);
+        $map->setPanControl(\Ivory\GoogleMap\Controls\ControlPosition::RIGHT_BOTTOM);
+        $map->setStylesheetOption('width', '100%');
+        $map->setStylesheetOption('height', '100%');
+        $map->setLanguage('it');
+        return $map;
+    }
+    
+    /**
+     * Requests the ivory google map service
+     *
+     * @return \Ivory\GoogleMapBundle\Model\Map 
+     */
     public function getMap($dist, $lat = 41.87194, $lon = 12.56738, $name = 'map', $zoom = 7) {
         $map = $this->map();
         $map->setJavascriptVariable($name);
