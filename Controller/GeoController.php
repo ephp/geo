@@ -115,7 +115,7 @@ class GeoController extends Controller {
                         'latitude' => $latitude,
                         'longitude' => $longitude,
                     );
-                    $request->getSession()->set('posizione', array('lat' => $latitude, 'lon' => $longitude, 'luogo' => $comune->getName() . ' (' . $comune->getAdmin2Code() . ')', 'provincia' => $provincia->getName(), 'sigla_provincia' => $comune->getAdmin2Code()));
+                    $request->getSession()->set('posizione', array('id' => $comune->getGeonameid(), 'lat' => $latitude, 'lon' => $longitude, 'luogo' => $comune->getName() . ' (' . $comune->getAdmin2Code() . ')', 'provincia' => $provincia->getName(), 'sigla_provincia' => $comune->getAdmin2Code()));
                     $request->getSession()->set('posizione_json', json_encode($out));
                     return new \Symfony\Component\HttpFoundation\Response(json_encode($out));
                     break;

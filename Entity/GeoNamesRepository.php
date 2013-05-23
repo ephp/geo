@@ -293,7 +293,7 @@ SELECT geo.admin2_code, (
             }
             $q->andWhere('c.name LIKE :comune')
                     ->setParameter('comune', $comune . '%');
-
+            $q->orderBy('c.population', 'ASC');
             $comuni = $q->getQuery()->execute();
             return array_shift($comuni);
         } catch (\Exception $e) {
