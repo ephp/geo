@@ -180,7 +180,7 @@ trait BaseGeoController {
         }
         $map->setMapOption('zoomControl', $params['zoomControl']['enable']);
         if ($params['zoomControl']['enable']) {
-            $map->setZoomControl(new \Ivory\GoogleMap\Controls\ZoomControl($params['zoomControl']['position'], $params['zoomControl']['style']));
+            $map->setZoomControl($params['zoomControl']['position'], $params['zoomControl']['style']);
         }
 
         if ($params['zoomControl']['auto']) {
