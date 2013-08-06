@@ -24,7 +24,7 @@ class GeoNamesRepository extends EntityRepository {
         $iso = $this->getManager()->getRepository('Ephp\GeoBundle\Entity\Country')->findOneBy(array('geonameid' => $geoId));
 
         $q = $this->createQueryBuilder('g');
-        $q->select('g.geonameid', 'g.asciiname','g.admin1_code','g.admin2_code');
+        $q->select('g.geonameid', 'g.asciiname', 'g.admin1_code', 'g.admin2_code');
         $q->where('g.country_code =:iso');
 
         $q->andWhere("g.population>=:pop");
@@ -41,16 +41,16 @@ class GeoNamesRepository extends EntityRepository {
                     , 'PPLS'
                     , 'PPLX')));
 
-        $q->orderBy('g.name','ASC');
+        $q->orderBy('g.name', 'ASC');
         $q->setParameter('iso', $iso->getIso());
-        $pop = $iso->getArea() > 2000 && $iso->getPopulation() > 35000 ? min(1000, $iso->getPopulation() / $iso->getArea()) * 15 : 0;
-        $q->setParameter('pop',$pop);
+        $pop = $iso->getArea() > 2000 && $iso->getPopulation() > 35000 ? max($iso->getPopulation() / 100000, $iso->getPopulation() * 15 / $iso->getArea()) : 0;
+        $q->setParameter('pop', $pop);
         $dql = $q->getQuery();
         $results = $dql->execute();
 
         return $results;
     }
-    
+
     /**
      * 
      * @param int $geoId
@@ -58,16 +58,20 @@ class GeoNamesRepository extends EntityRepository {
      */
     public function getNomeCitta($geoId) {
         $q = $this->createQueryBuilder('g');
-        $q->select('g.asciiname','g.admin2_code');
+        $q->select('g.asciiname', 'g.admin1_code', 'g.admin2_code');
         $q->where('g.geonameid =:geoId');
         $q->setParameter('geoId', $geoId);
         $dql = $q->getQuery();
         $results = $dql->getOneOrNullResult();
+        $area = "";
+        if ($results['admin1_code'] && !intval($results['admin1_code'])) {
+            $area = $results['admin1_code'];
+        } else if ($results['admin2_code'] && !intval($results['admin2_code'])) {
+            $area = $results['admin2_code'];
+        }
 
-        return $results["asciiname"]." (".$results["admin2_code"].")";
+        return $results["asciiname"] . " (" . $area . ")";
     }
-    
-    
 
     /**
      * Restituisce il comune
@@ -248,7 +252,7 @@ SELECT geo.admin2_code, (
         }
     }
 
-    /*
+    /**
      * Restituisce il comune
      *
      * @param float $latitude
@@ -256,18 +260,141 @@ SELECT geo.admin2_code, (
      * @return Ephp\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
+    public function ricercaRegione($regione, $nazione = null) {
 
-    public function cercaComune($nome) {
+        try {
+            $q = $this->createQueryBuilder('c')
+                    ->where('c.feature_code = :fc')
+                    ->setParameter('fc', 'ADM1');
+            if ($nazione) {
+                $q->andWhere('c.country_code = :cc')
+                        ->setParameter('cc', $nazione);
+            }
+            $q->andWhere('c.name LIKE :regione OR c.asciiname LIKE :regione')
+                    ->setParameter('regione', $regione . '%');
+            $q->orderBy('c.population', 'ASC');
+            $comuni = $q->getQuery()->execute();
+            return array_shift($comuni);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+    /**
+     * Restituisce il comune
+     *
+     * @param float $latitude
+     * @param float $longitude
+     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @throws NoResultException 
+     */
+    public function ricercaProvincia($provincia, $regione = null, $nazione = null) {
+
+        try {
+            $q = $this->createQueryBuilder('c')
+                    ->where('c.feature_code = :fc')
+                    ->setParameter('fc', 'ADM2');
+            if ($nazione) {
+                $q->andWhere('c.country_code = :cc')
+                        ->setParameter('cc', $nazione);
+            }
+            if ($regione) {
+                $qr = $this->createQueryBuilder('c')
+                        ->where('c.feature_code = :fc')
+                        ->setParameter('fc', 'ADM1');
+                if ($nazione) {
+                    $qr->andWhere('c.country_code = :cc')
+                            ->setParameter('cc', $nazione);
+                }
+                $qr->andWhere('c.name LIKE :regione')
+                        ->setParameter('regione', '%' . $regione . '%');
+                $reg = $qr->getQuery()->getOneOrNullResult();
+                /* @var $reg GeoNames */
+                if($reg) {
+                    $q->andWhere('c.admin1_code = :reg')
+                            ->setParameter('reg', $reg->getAdmin1Code());
+                }
+            }
+            $q->andWhere('c.name LIKE :comune')
+                    ->setParameter('comune', $provincia . '%');
+            $q->orderBy('c.population', 'ASC');
+//            \Ephp\UtilityBundle\Utility\Debug::pr($q->getQuery()->getSQL(), true);
+//            \Ephp\UtilityBundle\Utility\Debug::pr($q->getQuery()->getParameters());
+            $comuni = $q->getQuery()->execute();
+            return array_shift($comuni);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+    /**
+     * Restituisce il comune
+     *
+     * @param float $latitude
+     * @param float $longitude
+     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @throws NoResultException 
+     */
+    public function ricercaComune($comune, $provincia = null, $regione = null, $nazione = null) {
+
+        try {
+            $q = $this->createQueryBuilder('c')
+                    ->where('c.feature_code = :fc')
+                    ->setParameter('fc', 'ADM3');
+            if ($nazione) {
+                $q->andWhere('c.country_code = :cc')
+                        ->setParameter('cc', $nazione);
+            }
+            if ($regione) {
+                $qr = $this->createQueryBuilder('c')
+                        ->where('c.feature_code = :fc')
+                        ->setParameter('fc', 'ADM1');
+                if ($nazione) {
+                    $qr->andWhere('c.country_code = :cc')
+                            ->setParameter('cc', $nazione);
+                }
+                $qr->andWhere('c.name LIKE :regione')
+                        ->setParameter('regione', '%' . $regione . '%');
+                $reg = $qr->getQuery()->getOneOrNullResult();
+                /* @var $reg GeoNames */
+                if($reg) {
+                    $q->andWhere('c.admin1_code = :reg')
+                            ->setParameter('reg', $reg->getAdmin1Code());
+                }
+            }
+            if ($provincia) {
+                $q->andWhere('c.admin2_code = :prov')
+                        ->setParameter('prov', $provincia);
+            }
+            $q->andWhere('c.name LIKE :comune')
+                    ->setParameter('comune', $comune . '%');
+            $q->orderBy('c.population', 'ASC');
+            $comuni = $q->getQuery()->execute();
+            return array_shift($comuni);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Restituisce il comune
+     *
+     * @param float $latitude
+     * @param float $longitude
+     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @throws NoResultException 
+     */
+    public function cercaComune($nome, $nazione = 'IT') {
 
         try {
             $q = $this->getManager()->createQuery("
 SELECT geo
   FROM Ephp\GeoBundle\Entity\GeoNames geo 
  WHERE geo.feature_code = 'ADM3'
+   AND geo.country_code = :nazione
    AND geo.name LIKE :nome
  ORDER BY geo.population DESC
                ");
-            $q->setParameter('nome', $nome . '%');
+            $q->setParameter('nome', '%' . $nome . '%');
+            $q->setParameter('nazione', $nazione );
             $comuni = $q->execute();
             return $comuni;
         } catch (\Exception $e) {

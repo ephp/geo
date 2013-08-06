@@ -15,10 +15,12 @@ class GeoController extends Controller {
     public function geoSearchComuneDatabaseAction() {
         $request = $this->getRequest();
         $nome = $request->get('nome');
+        $nazione = $request->get('nazione', 'IT');
         $maxRows = $request->get('maxRows');
         $em = $this->getEM();
-        $_geo_names = $em->getRepository('Ephp\GeoBundle\Entity\GeoNames');
-        $comuni = $_geo_names->cercaComune($nome);
+        $_geo_names = $em->getRepository('EphpGeoBundle:GeoNames');
+        /* @var $_geo_names \Ephp\GeoBundle\Entity\GeoNamesRepository */
+        $comuni = $_geo_names->cercaComune($nome, $nazione);
         $out = array();
         foreach ($comuni as $comune) {
             $out[] = array(
@@ -36,7 +38,7 @@ class GeoController extends Controller {
     
     
     /**
-     * @Route("/geo/get/nazione", name="geo_search_nazione_database", defaults={"_format"="json"}))
+     * @Route("/geo/get/nazione", name="geo_search_nazione_database", defaults={"_format"="json"})
      * @Template()
      */
     public function geoSearchNazioneDatabaseAction() {
@@ -86,7 +88,7 @@ class GeoController extends Controller {
     }
 
     /**
-     * @Route("/geo/search/comune", name="geo_search_comune")
+     * @Route("/geo/search/comune", name="geo_search_comune", defaults={"_format"="json"})
      * @Template()
      */
     public function geoSearchComuneAction() {
@@ -101,11 +103,9 @@ class GeoController extends Controller {
             $provincia = $out['provincia'];
             switch ($request->get('output', 'json')) {
                 case 'nome':
-                    echo $comune->getName();
-                    exit;
+                    return new \Symfony\Component\HttpFoundation\Response(json_encode($comune->getName()));
                 case 'nome_e_provincia':
-                    echo "{$comune->getName()} ({$comune->getAdmin2Code()})";
-                    exit;
+                    return new \Symfony\Component\HttpFoundation\Response(json_encode("{$comune->getName()} ({$comune->getAdmin2Code()})"));
                 case 'json':
                 default:
                     $out = array(
@@ -115,14 +115,13 @@ class GeoController extends Controller {
                         'latitude' => $latitude,
                         'longitude' => $longitude,
                     );
-                    $request->getSession()->set('posizione', array('lat' => $latitude, 'lon' => $longitude, 'luogo' => $comune->getName() . ' (' . $comune->getAdmin2Code() . ')', 'provincia' => $provincia->getName(), 'sigla_provincia' => $comune->getAdmin2Code()));
-                    $request->getSession()->set('posizione_json', $out);
-                    echo json_encode($out);
-                    exit;
+                    $request->getSession()->set('posizione', array('id' => $comune->getGeonameid(), 'lat' => $latitude, 'lon' => $longitude, 'luogo' => $comune->getName() . ' (' . $comune->getAdmin2Code() . ')', 'provincia' => $provincia->getName(), 'sigla_provincia' => $comune->getAdmin2Code()));
+                    $request->getSession()->set('posizione_json', json_encode($out));
+                    return new \Symfony\Component\HttpFoundation\Response(json_encode($out));
                     break;
             }
         } else {
-            echo json_encode($request->getSession()->get('posizione_json'));
+            return new \Symfony\Component\HttpFoundation\Response($request->getSession()->get('posizione_json'));
             exit;
         }
     }
@@ -311,13 +310,18 @@ class GeoController extends Controller {
 
     /**
      *
-     * @param Ivory\GoogleMapBundle\Model\Services\Geocoding\Result\GeocoderResponse $response
+     * @param \Ivory\GoogleMapBundle\Model\Services\Geocoding\Result\GeocoderResponse $response
      * @return array
      */
-    private function getFirstResult(\Ivory\GoogleMapBundle\Model\Services\Geocoding\Result\GeocoderResponse $response) {
+    protected function getFirstResult(\Ivory\GoogleMap\Services\Geocoding\Result\GeocoderResponse $response) {
         $out = array();
-//        $result = new \Ivory\GoogleMapBundle\Model\Services\Geocoding\Result\GeocoderResult();
+        if ($response->getStatus() == 'OVER_QUERY_LIMIT') {
+            throw new \Exception('STOP');
+        }
         $r = $response->getResults();
+        if (count($r) == 0) {
+            throw new \Exception('No dati geolocalizzati');
+        }
         $result = $r[0];
 
         $out['lat'] = $result->getGeometry()->getLocation()->getLatitude();
@@ -329,5 +333,4 @@ class GeoController extends Controller {
         }
         return $out;
     }
-
 }

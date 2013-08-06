@@ -1,10 +1,10 @@
 <?php
 
-namespace Ephp\GeoBundle\Entity;
+namespace Ephp\GeoBundle\Model\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
-trait GeoBase {
+trait BaseGeo {
 
     /**
      * @var Comune $comune
@@ -196,6 +196,7 @@ trait GeoBase {
      * @ORM\PrePersist
      */
     public function prePersist() {
+        parent::prePersist();
         $this->latitudinerad = deg2rad($this->latitudine);
         $this->longitudinerad = deg2rad($this->longitudine);
     }
@@ -204,6 +205,7 @@ trait GeoBase {
      * @ORM\PreUpdate
      */
     public function preUpdate() {
+        parent::prePersist();
         $this->latitudinerad = deg2rad($this->latitudine);
         $this->longitudinerad = deg2rad($this->longitudine);
     }
