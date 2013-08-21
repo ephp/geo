@@ -21,7 +21,7 @@ class GeoNamesRepository extends EntityRepository {
      */
     public function getCitta($geoId) {
 
-        $iso = $this->getManager()->getRepository('Ephp\GeoBundle\Entity\Country')->findOneBy(array('geonameid' => $geoId));
+        $iso = $this->getEntityManager()->getRepository('Ephp\GeoBundle\Entity\Country')->findOneBy(array('geonameid' => $geoId));
 
         $q = $this->createQueryBuilder('g');
         $q->select('g.geonameid', 'g.asciiname', 'g.admin1_code', 'g.admin2_code');
@@ -82,7 +82,7 @@ class GeoNamesRepository extends EntityRepository {
      * @throws NoResultException 
      */
     public function getComune($latitude, $longitude) {
-        $config = $this->getManager()->getConfiguration();
+        $config = $this->getEntityManager()->getConfiguration();
         $config->addCustomNumericFunction('DEGREES', 'DoctrineExtensions\Query\Mysql\Degrees');
         $config->addCustomNumericFunction('ACOS', 'DoctrineExtensions\Query\Mysql\Acos');
         $config->addCustomNumericFunction('SIN', 'DoctrineExtensions\Query\Mysql\Sin');
@@ -90,7 +90,7 @@ class GeoNamesRepository extends EntityRepository {
         $config->addCustomNumericFunction('COS', 'DoctrineExtensions\Query\Mysql\Cos');
 
         try {
-            $q = $this->getManager()->createQuery("
+            $q = $this->getEntityManager()->createQuery("
 SELECT geo.admin3_code, (
     DEGREES(
         ACOS(
@@ -141,7 +141,7 @@ SELECT geo.admin3_code, (
      * @throws NoResultException 
      */
     public function getComuneProvincia($latitude, $longitude) {
-        $config = $this->getManager()->getConfiguration();
+        $config = $this->getEntityManager()->getConfiguration();
         $config->addCustomNumericFunction('DEGREES', 'DoctrineExtensions\Query\Mysql\Degrees');
         $config->addCustomNumericFunction('ACOS', 'DoctrineExtensions\Query\Mysql\Acos');
         $config->addCustomNumericFunction('SIN', 'DoctrineExtensions\Query\Mysql\Sin');
@@ -149,7 +149,7 @@ SELECT geo.admin3_code, (
         $config->addCustomNumericFunction('COS', 'DoctrineExtensions\Query\Mysql\Cos');
 
         try {
-            $q = $this->getManager()->createQuery("
+            $q = $this->getEntityManager()->createQuery("
 SELECT geo.admin3_code, geo.admin2_code, (
     DEGREES(
         ACOS(
@@ -202,7 +202,7 @@ SELECT geo.admin3_code, geo.admin2_code, (
      * @throws NoResultException 
      */
     public function getProvincia($latitude, $longitude) {
-        $config = $this->getManager()->getConfiguration();
+        $config = $this->getEntityManager()->getConfiguration();
         $config->addCustomNumericFunction('DEGREES', 'DoctrineExtensions\Query\Mysql\Degrees');
         $config->addCustomNumericFunction('ACOS', 'DoctrineExtensions\Query\Mysql\Acos');
         $config->addCustomNumericFunction('SIN', 'DoctrineExtensions\Query\Mysql\Sin');
@@ -210,7 +210,7 @@ SELECT geo.admin3_code, geo.admin2_code, (
         $config->addCustomNumericFunction('COS', 'DoctrineExtensions\Query\Mysql\Cos');
 
         try {
-            $q = $this->getManager()->createQuery("
+            $q = $this->getEntityManager()->createQuery("
 SELECT geo.admin2_code, (
     DEGREES(
         ACOS(
@@ -385,7 +385,7 @@ SELECT geo.admin2_code, (
     public function cercaComune($nome, $nazione = 'IT') {
 
         try {
-            $q = $this->getManager()->createQuery("
+            $q = $this->getEntityManager()->createQuery("
 SELECT geo
   FROM Ephp\GeoBundle\Entity\GeoNames geo 
  WHERE geo.feature_code = 'ADM3'
@@ -414,7 +414,7 @@ SELECT geo
     public function cercaTutto($nome) {
 
         try {
-            $q = $this->getManager()->createQuery("
+            $q = $this->getEntityManager()->createQuery("
 SELECT geo
   FROM Ephp\GeoBundle\Entity\GeoNames geo 
  WHERE geo.admin2_code != ''
@@ -445,7 +445,7 @@ SELECT geo
     public function cercaProvincia($nome) {
 
         try {
-            $q = $this->getManager()->createQuery("
+            $q = $this->getEntityManager()->createQuery("
 SELECT geo
   FROM Ephp\GeoBundle\Entity\GeoNames geo 
  WHERE geo.feature_code = 'ADM2'
