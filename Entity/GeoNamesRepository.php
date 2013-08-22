@@ -19,7 +19,7 @@ class GeoNamesRepository extends EntityRepository {
      * 
      * @author Barno <barno77@gmail.com> :)
      */
-    public function getCitta($geoId) {
+    public function getCitta($geoId, $min = 5000, $fc = array('PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLS', 'PPLX')) {
 
         $iso = $this->getEntityManager()->getRepository('Ephp\GeoBundle\Entity\Country')->findOneBy(array('geonameid' => $geoId));
 
@@ -29,21 +29,11 @@ class GeoNamesRepository extends EntityRepository {
 
         $q->andWhere("g.population>=:pop");
 
-        $q->andWhere($q->expr()->in('g.feature_code', array('PPL'
-                    , 'PPLA'
-                    , 'PPLA2'
-                    , 'PPLA3'
-                    , 'PPLA4'
-                    , 'PPLC'
-                    , 'PPLF'
-                    , 'PPLG'
-                    , 'PPLL'
-                    , 'PPLS'
-                    , 'PPLX')));
+        $q->andWhere($q->expr()->in('g.feature_code', $fc));
 
         $q->orderBy('g.name', 'ASC');
         $q->setParameter('iso', $iso->getIso());
-        $pop = $iso->getArea() > 2000 && $iso->getPopulation() > 35000 ? max($iso->getPopulation() / 100000, $iso->getPopulation() * 15 / $iso->getArea()) : 0;
+        $pop = $iso->getArea() > 2000 && $iso->getPopulation() > $min * 5 ? max($iso->getPopulation() / 100000, $iso->getPopulation() * 15 / $iso->getArea(), $min) : 0;
         $q->setParameter('pop', $pop);
         $dql = $q->getQuery();
         $results = $dql->execute();
