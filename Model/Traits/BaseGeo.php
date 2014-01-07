@@ -10,10 +10,17 @@ trait BaseGeo {
      * @var Comune $comune
      *
      * @ORM\ManyToOne(targetEntity="Ephp\GeoBundle\Entity\GeoNames")
-     * @ORM\JoinColumn(name="comune_id", referencedColumnName="geonameid")
+     * @ORM\JoinColumn(name="comune_id", referencedColumnName="geonameid", nullable=true)
      */
     protected $comune;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="localita", type="string", length=255, nullable=true)
+     */
+    private $localita;    
+    
     /**
      * @var string $cap
      *
@@ -108,6 +115,24 @@ trait BaseGeo {
      */
     public function getIndirizzo() {
         return $this->indirizzo;
+    }
+
+    /**
+     * Set localita
+     *
+     * @param string $localita
+     */
+    public function setLocalita($localita) {
+        $this->localita = $localita;
+    }
+
+    /**
+     * Get localita
+     *
+     * @return string 
+     */
+    public function getLocalita() {
+        return $this->localita;
     }
 
     /**
