@@ -39,19 +39,16 @@ class Geo {
         $a['lon'] = floatval($a['lon']);
         return acos(
                         (
-                        sin($da['lat'])
-                        *
+                        sin($da['lat']) *
                         sin($a['lat'])
                         ) + (
-                        cos($da['lat'])
-                        *
-                        cos($a['lat'])
-                        *
+                        cos($da['lat']) *
+                        cos($a['lat']) *
                         cos($da['lon'] - $a['lon'])
                         )
                 ) * self::TERRA;
     }
-    
+
     /**
      * Calcola la distanza in km fra due punti geolocalizzati espressi in gradi
      * 
@@ -106,6 +103,33 @@ class Geo {
             return round($distanza, 1) . 'km';
         }
         return round($distanza) . 'km';
+    }
+
+    public static $offset = 268435456;
+    public static $radius = 85445659.44705395; /* $offset / pi(); */
+
+    static function LonToX($lon) {
+        return round(self::$offset + self::$radius * $lon * pi() / 180);
+    }
+
+    static function LatToY($lat) {
+        return round(self::$offset - self::$radius * log((1 + sin($lat * pi() / 180)) / (1 - sin($lat * pi() / 180))) / 2);
+    }
+
+    static function XToLon($x) {
+        return ((round($x) - self::$offset) / self::$radius) * 180 / pi();
+    }
+
+    static function YToLat($y) {
+        return (pi() / 2 - 2 * atan(exp((round($y) - self::$offset) / self::$radius))) * 180 / pi();
+    }
+
+    static function adjustLonByPixels($lon, $delta, $zoom) {
+        return self::XToLon(self::LonToX($lon) + ($delta << (21 - $zoom)));
+    }
+
+    static function adjustLatByPixels($lat, $delta, $zoom) {
+        return self::YToLat(self::LatToY($lat) + ($delta << (21 - $zoom)));
     }
 
 }
