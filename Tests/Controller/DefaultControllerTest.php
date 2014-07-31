@@ -1,6 +1,6 @@
 <?php
 
-namespace Ephp\GeoBundle\Tests\Controller;
+namespace JF\GeoBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

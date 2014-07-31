@@ -1,6 +1,6 @@
 <?php
 
-namespace Ephp\GeoBundle\DependencyInjection;
+namespace JF\GeoBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ephp_geo');
+        $rootNode = $treeBuilder->root('jf_geo');
 
         $rootNode
                 ->children()

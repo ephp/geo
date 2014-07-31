@@ -1,6 +1,6 @@
 <?php
 
-namespace Ephp\GeoBundle\DependencyInjection;
+namespace JF\GeoBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class EphpGeoExtension extends Extension
+class JFGeoExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -22,9 +22,9 @@ class EphpGeoExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('ephp_geo.map', $config['map']);
-        $container->setParameter('ephp_geo.marker', $config['marker']);
-        $container->setParameter('ephp_geo.circle', $config['circle']);
+        $container->setParameter('jf_geo.map', $config['map']);
+        $container->setParameter('jf_geo.marker', $config['marker']);
+        $container->setParameter('jf_geo.circle', $config['circle']);
         
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');

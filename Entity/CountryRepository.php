@@ -1,6 +1,6 @@
 <?php
 
-namespace Ephp\GeoBundle\Entity;
+namespace JF\GeoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

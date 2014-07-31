@@ -1,11 +1,11 @@
 <?php
 
-namespace Ephp\GeoBundle\Entity;
+namespace JF\GeoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Ephp\GeoBundle\Entity\GeoNames
+ * JF\GeoBundle\Entity\GeoNames
  *
  * @ORM\Table(name="geo_names",
  *                    indexes={
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *                      @ORM\Index(name="geo_lon", columns={"longitude"}),
  *                      @ORM\Index(name="geo_pop", columns={"population"})
  *                    })
- * @ORM\Entity(repositoryClass="Ephp\GeoBundle\Entity\GeoNamesRepository")
+ * @ORM\Entity(repositoryClass="JF\GeoBundle\Entity\GeoNamesRepository")
  */
 class GeoNames
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ephp\GeoBundle\Controller;
+namespace JF\GeoBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -18,8 +18,8 @@ class GeoController extends Controller {
         $nazione = $request->get('nazione', 'IT');
         $maxRows = $request->get('maxRows');
         $em = $this->getEM();
-        $_geo_names = $em->getRepository('EphpGeoBundle:GeoNames');
-        /* @var $_geo_names \Ephp\GeoBundle\Entity\GeoNamesRepository */
+        $_geo_names = $em->getRepository('JFGeoBundle:GeoNames');
+        /* @var $_geo_names \JF\GeoBundle\Entity\GeoNamesRepository */
         $comuni = $_geo_names->cercaComune($nome, $nazione);
         $out = array();
         foreach ($comuni as $comune) {
@@ -43,7 +43,7 @@ class GeoController extends Controller {
      */
     public function geoSearchNazioneDatabaseAction() {
         $em = $this->getEM();
-        $_geo_names = $em->getRepository('Ephp\GeoBundle\Entity\GeoNames');
+        $_geo_names = $em->getRepository('JF\GeoBundle\Entity\GeoNames');
         $nazioni = $_geo_names->cercaNazione();
         $out = array();
         foreach ($nazioni as $nazione) {
@@ -66,7 +66,7 @@ class GeoController extends Controller {
         $nome = $request->get('nome');
         $maxRows = $request->get('maxRows');
         $em = $this->getEM();
-        $_geo_names = $em->getRepository('Ephp\GeoBundle\Entity\GeoNames');
+        $_geo_names = $em->getRepository('JF\GeoBundle\Entity\GeoNames');
         $comuni = $_geo_names->cercaTutto($nome);
         $out = array();
         $in = array();
@@ -97,7 +97,7 @@ class GeoController extends Controller {
             $latitude = $request->get('latitude');
             $longitude = $request->get('longitude');
             $em = $this->getEM();
-            $_geo_names = $em->getRepository('Ephp\GeoBundle\Entity\GeoNames');
+            $_geo_names = $em->getRepository('JF\GeoBundle\Entity\GeoNames');
             $out = $_geo_names->getComuneProvincia($latitude, $longitude);
             $comune = $out['comune'];
             $provincia = $out['provincia'];
@@ -134,7 +134,7 @@ class GeoController extends Controller {
         $request = $this->getRequest();
         $id = $request->get('id');
         $em = $this->getEM();
-        $_geo_names = $em->getRepository('Ephp\GeoBundle\Entity\GeoNames');
+        $_geo_names = $em->getRepository('JF\GeoBundle\Entity\GeoNames');
         $comune = $_geo_names->find($id);
         $out = array(
             'id' => $comune->getGeonameid(),
@@ -156,7 +156,7 @@ class GeoController extends Controller {
         $latitude = $request->get('latitude');
         $longitude = $request->get('longitude');
         $em = $this->getEM();
-        $_geo_names = $em->getRepository('Ephp\GeoBundle\Entity\GeoNames');
+        $_geo_names = $em->getRepository('JF\GeoBundle\Entity\GeoNames');
         $out = $_geo_names->getComuneProvincia($latitude, $longitude);
         $comune = $out['comune'];
         $provincia = $out['provincia'];
@@ -199,7 +199,7 @@ class GeoController extends Controller {
         $nome = $request->get('nome');
         $maxRows = $request->get('maxRows');
         $em = $this->getEM();
-        $_geo_names = $em->getRepository('Ephp\GeoBundle\Entity\GeoNames');
+        $_geo_names = $em->getRepository('JF\GeoBundle\Entity\GeoNames');
         $province = $_geo_names->cercaProvincia($nome);
         $out = array();
         foreach ($province as $provincia) {            
@@ -223,7 +223,7 @@ class GeoController extends Controller {
         $request = $this->getRequest();
         $id = $request->get('id');
         $em = $this->getEM();
-        $_geo_names = $em->getRepository('Ephp\GeoBundle\Entity\GeoNames');
+        $_geo_names = $em->getRepository('JF\GeoBundle\Entity\GeoNames');
         $provincia = $_geo_names->find($id);
         $out = array(
             'id' => $provincia->getGeonameid(),
@@ -244,7 +244,7 @@ class GeoController extends Controller {
         $latitude = $request->get('latitude');
         $longitude = $request->get('longitude');
         $em = $this->getEM();
-        $_geo_names = $em->getRepository('Ephp\GeoBundle\Entity\GeoNames');
+        $_geo_names = $em->getRepository('JF\GeoBundle\Entity\GeoNames');
         $comune = $_geo_names->getProvincia($latitude, $longitude);
         switch ($request->get('output', 'json')) {
             case 'nome':

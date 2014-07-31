@@ -1,6 +1,6 @@
 <?php
 
-namespace Ephp\GeoBundle\Controller\Traits;
+namespace JF\GeoBundle\Controller\Traits;
 
 trait BaseGeoController {
 
@@ -9,8 +9,8 @@ trait BaseGeoController {
             'lat' => null,
             'lon' => null,
         );
-        if ($comune instanceof \Ephp\GeoBundle\Entity\GeoNames) {
-            /* @var $comune \Ephp\GeoBundle\Entity\GeoNames */
+        if ($comune instanceof \JF\GeoBundle\Entity\GeoNames) {
+            /* @var $comune \JF\GeoBundle\Entity\GeoNames */
             $result['lat'] = $comune->getLatitude();
             $result['lon'] = $comune->getLongitude();
             $comune = $comune->getAsciiname();
@@ -72,7 +72,7 @@ trait BaseGeoController {
      * @return \Ivory\GoogleMap\Map 
      */
     public function getMap($setting = array()) {
-        $defaults = $this->container->getParameter('ephp_geo.map');
+        $defaults = $this->container->getParameter('jf_geo.map');
         $params = array_merge($defaults, $setting);
         if(isset($setting['mapTypeControl'])) {
             $params['mapTypeControl'] = array_merge($defaults['mapTypeControl'], $setting['mapTypeControl']);
@@ -211,7 +211,7 @@ trait BaseGeoController {
      * @return \Ivory\GoogleMap\Overlays\Marker
      */
     public function getMarker($setting = array()) {
-        $params = array_merge($this->container->getParameter('ephp_geo.marker'), $setting);
+        $params = array_merge($this->container->getParameter('jf_geo.marker'), $setting);
         $marker = $this->get('ivory_google_map.marker');
         /* @var $marker \Ivory\GoogleMap\Overlays\Marker */
         
@@ -268,7 +268,7 @@ trait BaseGeoController {
      * @return \Ivory\GoogleMap\Overlays\Circle
      */
     public function getCircle($setting = array()) {
-        $params = array_merge($this->container->getParameter('ephp_geo.circle'), $setting);
+        $params = array_merge($this->container->getParameter('jf_geo.circle'), $setting);
         $circle = $this->get('ivory_google_map.circle');
         /* @var $circle \Ivory\GoogleMap\Overlays\Circle */
         

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ephp\GeoBundle\Entity;
+namespace JF\GeoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -21,7 +21,7 @@ class GeoNamesRepository extends EntityRepository {
      */
     public function getCitta($geoId, $min = 5000, $fc = array('PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLS', 'PPLX')) {
 
-        $iso = $this->getEntityManager()->getRepository('Ephp\GeoBundle\Entity\Country')->findOneBy(array('geonameid' => $geoId));
+        $iso = $this->getEntityManager()->getRepository('JF\GeoBundle\Entity\Country')->findOneBy(array('geonameid' => $geoId));
 
         $q = $this->createQueryBuilder('g');
         $q->select('g.geonameid', 'g.asciiname', 'g.admin1_code', 'g.admin2_code');
@@ -68,7 +68,7 @@ class GeoNamesRepository extends EntityRepository {
      *
      * @param float $latitude
      * @param float $longitude
-     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @return JF\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
     public function getComune($latitude, $longitude) {
@@ -102,7 +102,7 @@ SELECT geo.admin3_code, (
         )        
     ) * 111.18957696
 ) as distanza 
-  FROM Ephp\GeoBundle\Entity\GeoNames geo 
+  FROM JF\GeoBundle\Entity\GeoNames geo 
  WHERE geo.admin3_code != ''
    AND geo.longitude BETWEEN (:longitude - 0.1) AND (:longitude + 0.1)  
    AND geo.latitude BETWEEN (:latitude - 0.1) AND (:latitude + 0.1)  
@@ -127,7 +127,7 @@ SELECT geo.admin3_code, (
      *
      * @param float $latitude
      * @param float $longitude
-     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @return JF\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
     public function getComuneProvincia($latitude, $longitude) {
@@ -161,7 +161,7 @@ SELECT geo.admin3_code, geo.admin2_code, (
         )        
     ) * 111.18957696
 ) as distanza 
-  FROM Ephp\GeoBundle\Entity\GeoNames geo 
+  FROM JF\GeoBundle\Entity\GeoNames geo 
  WHERE geo.admin3_code != ''
    AND geo.longitude BETWEEN (:longitude - 0.1) AND (:longitude + 0.1)  
    AND geo.latitude BETWEEN (:latitude - 0.1) AND (:latitude + 0.1)  
@@ -188,7 +188,7 @@ SELECT geo.admin3_code, geo.admin2_code, (
      *
      * @param float $latitude
      * @param float $longitude
-     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @return JF\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
     public function getProvincia($latitude, $longitude) {
@@ -222,7 +222,7 @@ SELECT geo.admin2_code, (
         )        
     ) * 111.18957696
 ) as distanza 
-  FROM Ephp\GeoBundle\Entity\GeoNames geo 
+  FROM JF\GeoBundle\Entity\GeoNames geo 
  WHERE geo.admin2_code != ''
    AND geo.longitude BETWEEN (:longitude - 0.1) AND (:longitude + 0.1)  
    AND geo.latitude BETWEEN (:latitude - 0.1) AND (:latitude + 0.1)  
@@ -247,7 +247,7 @@ SELECT geo.admin2_code, (
      *
      * @param float $latitude
      * @param float $longitude
-     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @return JF\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
     public function ricercaRegione($regione, $nazione = null) {
@@ -274,7 +274,7 @@ SELECT geo.admin2_code, (
      *
      * @param float $latitude
      * @param float $longitude
-     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @return JF\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
     public function ricercaProvincia($provincia, $regione = null, $nazione = null) {
@@ -307,8 +307,8 @@ SELECT geo.admin2_code, (
             $q->andWhere('c.name LIKE :comune')
                     ->setParameter('comune', $provincia . '%');
             $q->orderBy('c.population', 'ASC');
-//            \Ephp\UtilityBundle\Utility\Debug::pr($q->getQuery()->getSQL(), true);
-//            \Ephp\UtilityBundle\Utility\Debug::pr($q->getQuery()->getParameters());
+//            \JF\UtilityBundle\Utility\Debug::pr($q->getQuery()->getSQL(), true);
+//            \JF\UtilityBundle\Utility\Debug::pr($q->getQuery()->getParameters());
             $comuni = $q->getQuery()->execute();
             return array_shift($comuni);
         } catch (\Exception $e) {
@@ -320,7 +320,7 @@ SELECT geo.admin2_code, (
      *
      * @param float $latitude
      * @param float $longitude
-     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @return JF\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
     public function ricercaComune($comune, $provincia = null, $regione = null, $nazione = null) {
@@ -369,7 +369,7 @@ SELECT geo.admin2_code, (
      *
      * @param float $latitude
      * @param float $longitude
-     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @return JF\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
     public function cercaComune($nome, $nazione = 'IT') {
@@ -377,7 +377,7 @@ SELECT geo.admin2_code, (
         try {
             $q = $this->getEntityManager()->createQuery("
 SELECT geo
-  FROM Ephp\GeoBundle\Entity\GeoNames geo 
+  FROM JF\GeoBundle\Entity\GeoNames geo 
  WHERE geo.feature_code = 'ADM3'
    AND geo.country_code = :nazione
    AND geo.name LIKE :nome
@@ -397,7 +397,7 @@ SELECT geo
      *
      * @param float $latitude
      * @param float $longitude
-     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @return JF\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
 
@@ -406,7 +406,7 @@ SELECT geo
         try {
             $q = $this->getEntityManager()->createQuery("
 SELECT geo
-  FROM Ephp\GeoBundle\Entity\GeoNames geo 
+  FROM JF\GeoBundle\Entity\GeoNames geo 
  WHERE geo.admin2_code != ''
    AND geo.feature_code IN ('ADM3', 'ADM4', 'ADMD', 'LTER', 'PCL', 'PCLD', 'PCLF', 
                             'PCLI', 'PCILX', 'PCLS', 'PRSH', 'TERR', 'ZN', 'ZNB', 
@@ -428,7 +428,7 @@ SELECT geo
      *
      * @param float $latitude
      * @param float $longitude
-     * @return Ephp\GeoBundle\Entity\GeoNames
+     * @return JF\GeoBundle\Entity\GeoNames
      * @throws NoResultException 
      */
 
@@ -437,7 +437,7 @@ SELECT geo
         try {
             $q = $this->getEntityManager()->createQuery("
 SELECT geo
-  FROM Ephp\GeoBundle\Entity\GeoNames geo 
+  FROM JF\GeoBundle\Entity\GeoNames geo 
  WHERE geo.feature_code = 'ADM2'
    AND geo.name LIKE :nome
  ORDER BY geo.population DESC

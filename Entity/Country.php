@@ -1,6 +1,6 @@
 <?php
 
-namespace Ephp\GeoBundle\Entity;
+namespace JF\GeoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Country
  *
  * @ORM\Table(name="geo_countries")
- * @ORM\Entity(repositoryClass="Ephp\GeoBundle\Entity\CountryRepository")
+ * @ORM\Entity(repositoryClass="JF\GeoBundle\Entity\CountryRepository")
  */
 class Country
 {

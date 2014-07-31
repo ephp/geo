@@ -1,9 +1,9 @@
 <?php
 
-namespace Ephp\GeoBundle;
+namespace JF\GeoBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class EphpGeoBundle extends Bundle
+class JFGeoBundle extends Bundle
 {
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ephp\GeoBundle\Utility;
+namespace JF\GeoBundle\Utility;
 
 class Geo {
 

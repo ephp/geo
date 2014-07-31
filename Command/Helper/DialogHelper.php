@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Ephp\GeoBundle\Command\Helper;
+namespace JF\GeoBundle\Command\Helper;
 
 use Symfony\Component\Console\Helper\DialogHelper as BaseDialogHelper;
 use Symfony\Component\Console\Output\OutputInterface;

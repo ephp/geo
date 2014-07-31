@@ -19,8 +19,8 @@
             "kriswallsmith/buzz": "*"
     },
     "autoload": {
-            "psr-0": { "Ephp\\GeoBundle": "" }
+            "psr-0": { "JF\\GeoBundle": "" }
     },
-    "target-dir": "Ephp/GeoBundle",
+    "target-dir": "JF/GeoBundle",
     "minimum-stability": "dev"
 }

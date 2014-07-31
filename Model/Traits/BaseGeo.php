@@ -1,6 +1,6 @@
 <?php
 
-namespace Ephp\GeoBundle\Model\Traits;
+namespace JF\GeoBundle\Model\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,7 +9,7 @@ trait BaseGeo {
     /**
      * @var Comune $comune
      *
-     * @ORM\ManyToOne(targetEntity="Ephp\GeoBundle\Entity\GeoNames")
+     * @ORM\ManyToOne(targetEntity="JF\GeoBundle\Entity\GeoNames")
      * @ORM\JoinColumn(name="comune_id", referencedColumnName="geonameid", nullable=true)
      */
     protected $comune;
@@ -66,7 +66,7 @@ trait BaseGeo {
     /**
      * Set comune_id
      *
-     * @param \Ephp\GeoBundle\Entity\GeoNames $comune
+     * @param \JF\GeoBundle\Entity\GeoNames $comune
      */
     public function setComune($comune) {
         $this->comune = $comune;
@@ -75,7 +75,7 @@ trait BaseGeo {
     /**
      * Get comune_id
      *
-     * @return \Ephp\GeoBundle\Entity\GeoNames 
+     * @return \JF\GeoBundle\Entity\GeoNames 
      */
     public function getComune() {
         return $this->comune;

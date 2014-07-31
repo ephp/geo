@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Ephp\GeoBundle\Command;
+namespace JF\GeoBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
-use Ephp\GeoBundle\Command\Helper\DialogHelper;
-use Ephp\GeoBundle\Entity\Country;
+use JF\GeoBundle\Command\Helper\DialogHelper;
+use JF\GeoBundle\Entity\Country;
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
 
 /**
@@ -50,14 +50,14 @@ EOT
         $dialog = $this->getDialogHelper();
         $dialog->writeSection($output, 'Import Tag', 'bg=white;fg=black');
 
-        $countryClass = $this->getContainer()->get('doctrine')->getEntityNamespace('EphpGeoBundle') . '\\Country';
-        $geoClass = $this->getContainer()->get('doctrine')->getEntityNamespace('EphpGeoBundle') . '\\GeoNames';
+        $countryClass = $this->getContainer()->get('doctrine')->getEntityNamespace('JFGeoBundle') . '\\Country';
+        $geoClass = $this->getContainer()->get('doctrine')->getEntityNamespace('JFGeoBundle') . '\\GeoNames';
         $em = $this->getEntityManager('default');
 
         $_geo = $em->getRepository($geoClass);
 
 
-        $bundle = $this->getContainer()->get('kernel')->getBundle('EphpGeoBundle');
+        $bundle = $this->getContainer()->get('kernel')->getBundle('JFGeoBundle');
         $bundle_namespace = get_class($bundle);
         echo "\n\n" . $bundle_namespace;
 
@@ -101,11 +101,11 @@ EOT
 
     /**
      * 
-     * @return \Ephp\PortletBundle\Command\Helper\DialogHelper
+     * @return \JF\PortletBundle\Command\Helper\DialogHelper
      */
     protected function getDialogHelper() {
         $dialog = $this->getHelperSet()->get('dialog');
-        if (!$dialog || get_class($dialog) !== 'Ephp\TagBundle\Command\Helper\DialogHelper') {
+        if (!$dialog || get_class($dialog) !== 'JF\TagBundle\Command\Helper\DialogHelper') {
             $this->getHelperSet()->set($dialog = new DialogHelper());
         }
 
